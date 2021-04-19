@@ -1,0 +1,73 @@
+plugins {
+    id "com.android.library"
+    id "kotlin-android"
+    id "kotlin-kapt"
+}
+
+apply from: "$project.rootDir/code_coverage_module.gradle"
+
+android {
+    compileSdkVersion build_versions.compile_sdk_version
+    buildToolsVersion build_versions.build_tools_version
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode build_versions.version_code
+        versionName build_versions.version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String", "BASE_URL", '"https://api.themoviedb.org"')
+        buildConfigField("String", "API_KEY", '"ec6eeecd76a7ecdbf34b3daa286e8411"')
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
+    }
+}
+
+dependencies {
+
+    api project(":the_movie_db_domain")
+
+    testImplementation "com.github.x-syaifullah-x.android-module-test:test:$vAndroidModuleTest"
+    androidTestImplementation "com.github.x-syaifullah-x.android-module-test:test:$vAndroidModuleTest"
+
+    kapt "com.google.dagger:dagger-compiler:$vDagger2"
+
+    api "androidx.paging:paging-runtime-ktx:3.0.0-beta03"
+    testImplementation "androidx.paging:paging-common-ktx:3.0.0-beta03"
+
+    api "com.jakewharton.timber:timber:4.7.1"
+
+    api "net.zetetic:android-database-sqlcipher:4.4.2"
+
+    api "androidx.room:room-runtime:2.3.0-rc01"
+    api "androidx.room:room-ktx:2.3.0-rc01"
+    kapt "androidx.room:room-compiler:2.3.0-rc01"
+    testImplementation "androidx.room:room-testing:2.3.0-rc01"
+
+    api "com.squareup.retrofit2:retrofit:2.9.0"
+    api "com.squareup.retrofit2:converter-gson:2.9.0"
+    api "com.squareup.okhttp3:okhttp-dnsoverhttps:4.9.0"
+    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
+}

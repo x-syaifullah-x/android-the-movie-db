@@ -1,0 +1,6 @@
+rootProject.name = "The Movie DB Module"
+
+include ':app'
+include ':the_movie_db_di'
+include ':the_movie_db_data'
+include ':the_movie_db_domain'

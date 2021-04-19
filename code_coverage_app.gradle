@@ -1,0 +1,94 @@
+apply plugin: "jacoco"
+
+jacoco {
+    reportsDir = file("$buildDir/${project.name}_code_coverage")
+}
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
+project.afterEvaluate {
+    android.'applicationVariants'.all { variant ->
+        def variantName = variant.name
+        def testVariantNameCodeCoverageTask = "${variantName.toLowerCase()}CodeCoverage"
+
+        def unitTest = "test${variantName.capitalize()}UnitTest"
+        def dataUnitTest = ":the_movie_db_data:test${variantName.capitalize()}UnitTest"
+        def domainUnitTest = ":the_movie_db_domain:test${variantName.capitalize()}UnitTest"
+        def diUnitTest = ":the_movie_db_di:test${variantName.capitalize()}UnitTest"
+
+        tasks.create(
+                name: "${testVariantNameCodeCoverageTask}",
+                type: JacocoReport,
+                dependsOn: [dataUnitTest, domainUnitTest, diUnitTest, unitTest]
+        ) {
+            group = "Reporting"
+            description = "Generate Jacoco coverage reports for the ${variantName.capitalize()} build"
+
+            reports {
+                html.enabled = true
+                xml.enabled = false
+                csv.enabled = false
+            }
+
+            def fileFilter = [
+                    '**/R.class',
+                    '**/R$*.class',
+                    '**/BuildConfig.*',
+                    '**/Manifest*.*',
+                    '**/*Test*.*',
+                    '**/com/example/databinding/*',
+                    '**/com/example/generated/callback/*',
+                    '**/android/databinding/*',
+                    '**/androidx/databinding/*',
+                    '**/di/module/*',
+                    '**/*MapperImpl*.*',
+                    '**/*$ViewInjector*.*',
+                    '**/*$ViewBinder*.*',
+                    '**/BuildConfig.*',
+                    '**/*Component*.*',
+                    '**/*BR*.*',
+                    '**/Manifest*.*',
+                    '**/*$Lambda$*.*',
+                    '**/*Companion*.*',
+                    '**/*Module.*', /* filtering Dagger modules classes */
+                    '**/*Dagger*.*',/* filtering Dagger-generated classes */
+                    '**/*MembersInjector*.*',
+                    '**/*_Factory*.*',
+                    '**/*_Provide*Factory*.*',
+                    '**/*Extensions*.*',
+                    '**/*$Result.*', /* filtering `sealed` and `data` classes */
+                    '**/*$Result$*.*',/* filtering `sealed` and `data` classes */
+                    '**/*Args*.*', /* filtering Navigation Component generated classes */
+                    '**/*Directions*.*' /* filtering Navigation Component generated classes */
+            ]
+
+            classDirectories.setFrom(files([
+                    fileTree(dir: "$rootDir/app/build/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+                    fileTree(dir: "$rootDir/the_movie_db_domain/build/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+                    fileTree(dir: "$rootDir/the_movie_db_data/build/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+                    fileTree(dir: "$rootDir/the_movie_db_di/build/tmp/kotlin-classes/$variantName", excludes: fileFilter),
+            ]))
+
+            def coverageSource = files(
+                    "$rootDir/app/src/main/java",
+                    "$rootDir/the_movie_db_domain/src/main/java",
+                    "$rootDir/the_movie_db_data/src/main/java",
+                    "$rootDir/the_movie_db_di/src/main/java",
+
+            )
+
+            additionalSourceDirs.setFrom(coverageSource)
+            sourceDirectories.setFrom(coverageSource)
+
+            executionData(files([
+                    "$rootDir/app/build/jacoco/${unitTest}.exec",
+                    "$rootDir/the_movie_db_domain/build/jacoco/${unitTest}.exec",
+                    "$rootDir/the_movie_db_data/build/jacoco/${unitTest}.exec",
+                    "$rootDir/the_movie_db_di/build/jacoco/${unitTest}.exec",
+            ]))
+        }
+    }
+}
