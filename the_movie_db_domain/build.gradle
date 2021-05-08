@@ -45,4 +45,6 @@ dependencies {
 
     testImplementation "com.github.x-syaifullah-x:android-module-test:$vAndroidModuleTest"
     androidTestImplementation "com.github.x-syaifullah-x:android-module-test:$vAndroidModuleTest"
+
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$vKotlinxMetadataJvm"
 }

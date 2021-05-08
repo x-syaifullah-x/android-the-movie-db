@@ -36,6 +36,7 @@ dependencies {
     api "com.github.x-syaifullah-x.android-module-base:base_di_with_dagger:$vAndroidModuleBase"
 
     kapt "com.google.dagger:dagger-compiler:$vDagger2"
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$vKotlinxMetadataJvm"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
