@@ -54,17 +54,17 @@ dependencies {
 
     kapt "com.google.dagger:dagger-compiler:$vDagger2"
 
-    api "androidx.paging:paging-runtime-ktx:3.0.0-rc01"
-    testImplementation "androidx.paging:paging-common-ktx:3.0.0-rc01"
+    api "androidx.paging:paging-runtime-ktx:3.0.0"
+    testImplementation "androidx.paging:paging-common-ktx:3.0.0"
 
     api "com.jakewharton.timber:timber:4.7.1"
 
     api "net.zetetic:android-database-sqlcipher:4.4.2"
 
-    api "androidx.room:room-runtime:2.4.0-alpha01"
-    api "androidx.room:room-ktx:2.4.0-alpha01"
-    kapt "androidx.room:room-compiler:2.4.0-alpha01"
-    testImplementation "androidx.room:room-testing:2.4.0-alpha01"
+    api "androidx.room:room-runtime:2.4.0-alpha02"
+    api "androidx.room:room-ktx:2.4.0-alpha02"
+    kapt "androidx.room:room-compiler:2.4.0-alpha02"
+    testImplementation "androidx.room:room-testing:2.4.0-alpha02"
 
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
