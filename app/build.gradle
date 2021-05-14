@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-kapt'
+    id "com.android.application"
+    id "kotlin-android"
+    id "kotlin-kapt"
 }
 
 apply from: "$project.rootDir/code_coverage_app.gradle"
@@ -47,7 +47,6 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
 
     kapt "com.google.dagger:dagger-compiler:$vDagger2"
-    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$vKotlinxMetadataJvm"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
